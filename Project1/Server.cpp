@@ -51,10 +51,7 @@ void Server::serve(int port)
 		throw std::exception(__FUNCTION__ " - listen");
 	std::cout << "Listening on port " << port << std::endl;
 
-	//// creating one thread that will take care on msg que
-	//std::thread msgHandler(&Server::sendMsgFromQue, this);
-	//msgHandler.detach();
-
+	
 	while (true)
 	{
 		// the main thread is only accepting clients 
@@ -88,75 +85,12 @@ void Server::clientHandler(SOCKET clientSocket)
 {
 	try
 	{
-		//std::string s = "Welcome! What is your name (4 bytes)? ";
-		//send(clientSocket, s.c_str(), s.size(), 0);  // last parameter: flag. for us will be 0.
-		/*string userName;
-		char m[5];
-		recv(clientSocket, m, 5, 0);
-		int namelen = m[4] - '0';
-		char* clientName = new char[namelen];
-		recv(clientSocket, clientName , namelen, 0);
-		std::string userName(clientName);
-
-		//delete[] clientName;
-		*/
-		int namelen;
-		string userName;
-		string otherName;
-		string fileName;
-		int datalen;
-		string data;
-		string allUsersName;
-		set<string> userFiles;
-		fstream myFile;
-
-		Helper::getIntPartFromSocket(clientSocket, 3);
-		namelen = Helper::getIntPartFromSocket(clientSocket, 2);
-		userName = Helper::getStringPartFromSocket(clientSocket, namelen);
-		std::cout << "Client name is: " << userName << std::endl;
-
-		socketByName[userName] = clientSocket;
-		nameBySocket[clientSocket] = userName;
-		Helper::send_update_message_to_client(clientSocket, data, userName, allUsersName);
-
 		while (true)
 		{
-			// tear the msg apart
-			Helper::getIntPartFromSocket(clientSocket, 3);
-			namelen = Helper::getIntPartFromSocket(clientSocket, 2);
-			otherName = Helper::getStringPartFromSocket(clientSocket, namelen);
-			fileName = getFileName(userName, otherName);
-			datalen = Helper::getIntPartFromSocket(clientSocket, 2);
-			data = Helper::getStringPartFromSocket(clientSocket, datalen);
-
-			if (data != "")
-			{
-				if (data == "exit")
-					break;
-				else
-				{
-					myFile.open(fileName, ios::app);
-					myFile << '&' + data;
-				}
-
-			}
-			map<string, SOCKET>::iterator it = socketByName.begin();
-
-			// Iterate through the map and print the elements
-			/*while (it != socketByName.end()) {
-				allUsersName += it->first;
-				++it;
-			}*/
-			for_each(socketByName.begin(), socketByName.end(), [&allUsersName](pair<string, SOCKET> p) {allUsersName += p.first + '&'; });
-
-			//allUsersName = iterator(socketByName.begin(), socketByName.end(), );
-			Helper::send_update_message_to_client(clientSocket, fileName, otherName, allUsersName);
 
 		}
-		/*char m[5];
-		recv(clientSocket, m, 4, 0);
-		m[4] = 0;
-		std::cout << "Client name is: " << m << std::endl;*/
+
+
 
 		// Closing the socket (in the level of the TCP protocol)
 		std::string s = "Bye";
