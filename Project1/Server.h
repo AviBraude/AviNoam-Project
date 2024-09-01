@@ -5,7 +5,10 @@
 
 class Server {
 private:
-	Communicator _Communicator;
+	Communicator* _Communicator;
 public:
-	void run();
+	Server();
+	~Server();
+
+	void run(int port);
 };

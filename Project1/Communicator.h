@@ -17,7 +17,7 @@ class Communicator
 public:
 	Communicator();
 	~Communicator();
-	void stratHandleRequest();
+	void stratHandleRequest(int port);
 
 private:
 	//methods
