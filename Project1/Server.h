@@ -4,7 +4,8 @@
 
 
 class Server {
+private:
+	Communicator _Communicator;
 public:
-	Communicator _Communicator
-
+	void run();
 };

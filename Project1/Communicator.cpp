@@ -70,13 +70,13 @@ void Communicator::acceptClient()
 			throw std::exception(__FUNCTION__);
 
 		std::cout << "Client accepted. Server and client can speak" << std::endl;
-		std::thread clientThread(&Communicator::clientHandler, this, client_socket);
+		std::thread clientThread(&Communicator::handleNewClient, this, client_socket);
 		clientThread.detach();
 	}
 }
 
 
-void Communicator::clientHandler(SOCKET clientSocket)
+void Communicator::handleNewClient(SOCKET clientSocket)
 {
 	try
 	{
