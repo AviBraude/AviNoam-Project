@@ -85,10 +85,10 @@ void Server::clientHandler(SOCKET clientSocket)
 {
 	try
 	{
-		while (true)
+		/*while (true)
 		{
-
-		}
+			break;
+		}*/
 
 
 
@@ -101,7 +101,7 @@ void Server::clientHandler(SOCKET clientSocket)
 	{
 		closesocket(clientSocket);
 	}
-
+}
 
 
 
