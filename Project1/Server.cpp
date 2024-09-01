@@ -85,16 +85,16 @@ void Server::clientHandler(SOCKET clientSocket)
 {
 	try
 	{
-		char m[8];
+		char m[6];
 		while (true)
 		{
 			recv(clientSocket, m, 5, 0);
-			m[7] = 0;
+			m[5] = 0;
 			std::cout << m << std::endl;
 			break;
 
 			std::cout << "here" << std::endl;
-			std::string s = "Bye";
+			std::string s = "Bye\n";
 			send(clientSocket, s.c_str(), s.size(), 0);
 		}
 
