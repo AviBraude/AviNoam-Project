@@ -86,21 +86,20 @@ void Server::clientHandler(SOCKET clientSocket)
 	try
 	{
 		char m[6];
-		while (true)
-		{
+		
 			recv(clientSocket, m, 5, 0);
 			m[5] = 0;
 			std::cout << m << std::endl;
-			break;
+			
 
-			std::cout << "here" << std::endl;
-			std::string s = "Bye\n";
+			//std::cout << "here" << std::endl;
+			std::string s = "Hello";
 			send(clientSocket, s.c_str(), s.size(), 0);
-		}
+		
 
 		// Closing the socket (in the level of the TCP protocol)
-		std::string s = "Bye";
-		send(clientSocket, s.c_str(), s.size(), 0);
+		/*std::string s = "Bye";
+		send(clientSocket, s.c_str(), s.size(), 0);*/
 		
 		closesocket(clientSocket);
 	}
