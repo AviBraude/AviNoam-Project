@@ -5,6 +5,8 @@
 
 class SQliteDatabase : IDatabase
 {
+	
+
 	bool open();
 	bool close();
 	
@@ -13,7 +15,9 @@ class SQliteDatabase : IDatabase
 	int addNewUser(std::string, std::string, std::string);
 
 private:
+	SQliteDatabase();
 	//helpers
+
 	bool isfile(std::string);
 	
 	//fields

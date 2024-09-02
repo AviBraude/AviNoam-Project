@@ -6,6 +6,9 @@
 
 int mycallback(void* data, int argc, char** argv, char** azColName);
 
+
+
+
 bool SQliteDatabase::open()
 {
 	//will print the table content if i will want
@@ -121,5 +124,4 @@ int mycallback(void* data, int argc, char** argv, char** azColName)
 	return 0;
 	
 }
-
 
