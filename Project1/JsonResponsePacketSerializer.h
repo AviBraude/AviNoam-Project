@@ -1,12 +1,17 @@
 #pragma once
 #include "Communicator.h"
 #include "request.h"
+#include <fstream>
+#include "json.hpp"
+#include <vector>
 
-static class JsonResponsePacketSerializer
+using json = nlohmann::json;
+
+class JsonResponsePacketSerializer
 {
-	void serializeResponse(ErrorResponse& res) ;
-	void serializeResponse(LoginResponse& res) ;
-	void serializeResponse(SignupResponse& res) ;
+	static std::vector<unsigned char> serializeResponse(ErrorResponse errorResponse);
+	static std::vector<unsigned char> serializeResponse(LoginResponse loginResponse);
+	static std::vector<unsigned char> serializeResponse(SignupResponse signupResponse);
 };
 
 

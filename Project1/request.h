@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-
+#define  STATUS1 200;
 
 struct SignupResponse
 {
