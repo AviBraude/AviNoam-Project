@@ -27,9 +27,30 @@ RequestResult LoginRequestHandler::login(RequestInfo& a)
 {
     LoginRequest logRequest;
     RequestResult res;
+
     logRequest = JsonResponsePacketDeserializer::deserializeLoginRequest(a._msgInfo);
     LoginResponse logRespons;
+    logRespons._status = 1;
+
+    // here we need the manager
+    res.newHandler = new LoginResponseHandler();
 
 
-    return RequestResult();
+    res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(logRespons);
+
+    return res;
+}
+
+RequestResult LoginRequestHandler::signup(RequestInfo& a)
+{
+    LoginRequest signRequest;
+    RequestResult res;
+    signRequest = JsonResponsePacketDeserializer::deserializeLoginRequest(a._msgInfo);
+    LoginResponse signRespons;
+    signRespons._status = 1;
+
+    res.newHandler = new signupResponseHandler();
+    res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(signRespons);
+
+    return res;
 }

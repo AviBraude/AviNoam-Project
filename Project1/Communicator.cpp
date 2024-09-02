@@ -115,8 +115,8 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			reqInfo._msgCode = int(messegeCode);
 
 			byteFromSocket = recv(clientSocket, lengthBuffer, 4, 0);
-			// make length buffer int
-			int msgSize = lengthBuffer;
+			// make length buffer int ------------>>>>>>>>>>>>> have to check if that's OK
+			int msgSize = int(lengthBuffer);
 
 			char* tmpMsgBuff = new char[msgSize];
 			byteFromSocket = recv(clientSocket, tmpMsgBuff, msgSize, 0);
@@ -126,6 +126,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			}
 			delete[] tmpMsgBuff;
 			// reqInfo._msgTime = std::chrono::system_clock::now;
+
 			if (this->_socketMap[clientSocket]->isRequestRelevent(reqInfo))
 			{
 				RequestResult resy = this->_socketMap[clientSocket]->handleRequest(reqInfo);
