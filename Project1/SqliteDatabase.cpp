@@ -2,8 +2,9 @@
 #include"sqlite3.h"
 #include <iostream>
 #include <fstream>
+#include<vector>
 
-
+int mycallback(void* data, int argc, char** argv, char** azColName);
 
 bool SQliteDatabase::open()
 {
@@ -24,6 +25,7 @@ bool SQliteDatabase::open()
 	if (check)
 	{
 		std::cout << "Can't open database" << std::endl;
+		return false;
 	}
 	else
 	{	//only initializes if didnt already exist.
@@ -39,16 +41,64 @@ bool SQliteDatabase::open()
 		check = sqlite3_exec(this->_DB, sql, nullptr, nullptr, &zErrMsg);
 		}
 	}
+	return true;
 }
 
 bool SQliteDatabase::close()
 {
-	delete _DB;
+	//delete _DB;
+	sqlite3_close(_DB);
 	std::cout << "closed DB";
+	return true;
 }
 
-int SQliteDatabase::doesUserExist(std::string)
+int SQliteDatabase::doesUserExist(std::string currentName)
 {
+	int check;
+	char* zErrMsg;
+	std::string querry = "SELECT count(Name) from Users Where Name ='" + currentName + "';";
+	//std::vector<std::string>* names = new std::vector<std::string> ;
+	int countName;
+	check = sqlite3_exec(this->_DB, querry.c_str(), mycallback, &countName, &zErrMsg);//callback func
+	if (countName > 0)
+	{
+		return false;//name is already taken
+	}
+	return true;//good name doesnt exist yet and is valid
+	
+}
+
+int SQliteDatabase::doesPasswordMatch(std::string currentName, std::string password)
+{
+
+	int check;
+	char* zErrMsg;
+	std::string querry = "SELECT count(Name) from Users Where Name ='" + currentName + "'\
+			AND PASSWORD = '" + password+"'; ";
+	//std::vector<std::string>* names = new std::vector<std::string> ;
+	int countName;
+	check = sqlite3_exec(this->_DB, querry.c_str(), mycallback, &countName, &zErrMsg);//callback func
+	if (countName == 0)
+	{
+		return false;//no match between name and password
+	}
+	return true;//name and password match
+
+}
+
+int SQliteDatabase::addNewUser(std::string name, std::string password, std::string mail)
+{
+	int check;
+	char* zErrMsg;
+	std::string querry = "INSERT INTO Users (Name, Password, Email)\
+		VALUES('"+name +"', '"+ password+"', '"+mail+"'); ";
+
+	check = sqlite3_exec(this->_DB, querry.c_str(), nullptr, nullptr, &zErrMsg);//callback func
+	if (check)
+	{
+		return false;
+	}
+	return 0;
 	
 }
 
@@ -61,6 +111,15 @@ bool SQliteDatabase::isfile(std::string fileName)
 		return true;
 	}
 	return false;
+}
+
+int mycallback(void* data, int argc, char** argv, char** azColName)
+{
+	int* count = (int*)data;
+	*count = atoi(argv[0]);
+	
+	return 0;
+	
 }
 
 
