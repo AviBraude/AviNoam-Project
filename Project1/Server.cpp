@@ -1,8 +1,10 @@
 #include "Server.h"
 #include "Communicator.h"
-Server::Server()
+#include "SqliteDatabase.h"
+
+Server::Server(): _database(new SqliteDatabase), _handleFactory(_database)
 {
-	_Communicator = new Communicator;
+	_Communicator = new Communicator(_handleFactory);	
 }
 Server::~Server()
 {

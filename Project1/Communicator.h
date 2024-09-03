@@ -10,14 +10,16 @@
 #include <map>
 #include <condition_variable>
 #include"IRequestHandler.h"
+#include "RequestHandlerFactory.h"
 
 
 class Communicator
 {
 public:
-	Communicator();
+	Communicator(RequestHandlerFactory& factory);
 	~Communicator();
 	void stratHandleRequest(int port);
+	int fromBytsToInt(char* chai);
 
 private:
 	//methods
@@ -30,6 +32,7 @@ private:
 	// fields
 	std::map<SOCKET, IRequestHandler*> _socketMap;
 	SOCKET _serverSocket;
+	RequestHandlerFactory& _factory;
 };
 
 

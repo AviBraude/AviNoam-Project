@@ -1,13 +1,15 @@
 #include "LoginRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
-
 #include <string>
+#define CORRECT_NAME_AND_PASSWORD 1
+#define LOGIN_CODE 1
+#define SIGNUP_CODE 2
 
 
 bool LoginRequestHandler::isRequestRelevent(RequestInfo& a)
 {
-    if (a._msgCode == '1' || a._msgCode == '2')
+    if (a._msgCode == LOGIN_CODE || a._msgCode == SIGNUP_CODE)
         return true;
     return false;
 }
@@ -15,9 +17,9 @@ bool LoginRequestHandler::isRequestRelevent(RequestInfo& a)
 RequestResult LoginRequestHandler::handleRequest(RequestInfo& a)
 {
     RequestResult reqResult;
-    if (a._msgCode == 1)
+    if (a._msgCode == LOGIN_CODE)
         reqResult = this->login(a);
-    else if (a._msgCode == 2)
+    else if (a._msgCode == SIGNUP_CODE)
         reqResult = this->signup(a);
 
     return reqResult;
@@ -30,27 +32,41 @@ RequestResult LoginRequestHandler::login(RequestInfo& a)
 
     logRequest = JsonResponsePacketDeserializer::deserializeLoginRequest(a._msgInfo);
     LoginResponse logRespons;
-    logRespons._status = 1;
-
-    // here we need the manager
-    res.newHandler = new LoginResponseHandler();
-
-
-    res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(logRespons);
+    int checky = _factory.getLoginManager().Login(logRequest);
+    logRespons._status = checky;
+    if (checky == CORRECT_NAME_AND_PASSWORD)
+    {
+        res.newHandler = nullptr; // here we will put the new state (menu)
+        res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(logRespons);
+    }
+    else
+    {
+        res.newHandler = _factory.creatLoginRequestHandler();
+        res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(logRespons);
+    }
 
     return res;
 }
 
 RequestResult LoginRequestHandler::signup(RequestInfo& a)
 {
-    LoginRequest signRequest;
+    SigninRequest signRequest;
     RequestResult res;
-    signRequest = JsonResponsePacketDeserializer::deserializeLoginRequest(a._msgInfo);
-    LoginResponse signRespons;
-    signRespons._status = 1;
+    signRequest = JsonResponsePacketDeserializer::deserializeSignUpRequest(a._msgInfo);
+    SignupResponse signRespons;
 
-    res.newHandler = new signupResponseHandler();
-    res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(signRespons);
+    int checky = _factory.getLoginManager().signup(signRequest);
+    signRespons._status = checky;
+    if (checky == CORRECT_NAME_AND_PASSWORD)
+    {
+        res.newHandler = nullptr; // here we will put the new state (menu)
+        res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(signRespons);
+    }
+    else
+    {
+        res.newHandler = _factory.creatLoginRequestHandler();
+        res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(signRespons);
+    }
 
     return res;
 }

@@ -12,7 +12,7 @@
 #include "LoginRequestHandler.h"
 #include <chrono>
 
-Communicator::Communicator()
+Communicator::Communicator(RequestHandlerFactory& factory) : _factory(factory)
 {
 
 	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
@@ -39,6 +39,16 @@ void Communicator::stratHandleRequest(int port)
 	this->BindAndListen(port);
 	acceptClient();
 
+}
+
+int Communicator::fromBytsToInt(char* chai)
+{
+	int res = 0;
+	res += chai[0];
+	res += chai[1] * 256;
+	res += chai[2] * 256 * 256;
+	res += chai[3] * 256 * 256 *256;
+	return res;
 }
 
 void Communicator::BindAndListen(int port)
@@ -84,9 +94,8 @@ void Communicator::acceptClient()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-	LoginRequestHandler* newlog = new LoginRequestHandler();
-	//LoginRequestHandler* newlog;
-	_socketMap[clientSocket] = newlog;
+	_socketMap[clientSocket] = _factory.creatLoginRequestHandler();
+	
 	int byteFromSocket;
 	char messegeCode;
 	char lengthBuffer[4];
@@ -116,7 +125,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 
 			byteFromSocket = recv(clientSocket, lengthBuffer, 4, 0);
 			// make length buffer int ------------>>>>>>>>>>>>> have to check if that's OK
-			int msgSize = int(lengthBuffer);
+			int msgSize = fromBytsToInt(lengthBuffer);
 
 			char* tmpMsgBuff = new char[msgSize];
 			byteFromSocket = recv(clientSocket, tmpMsgBuff, msgSize, 0);
@@ -125,7 +134,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				reqInfo._msgInfo.push_back(tmpMsgBuff[i]);
 			}
 			delete[] tmpMsgBuff;
-			// reqInfo._msgTime = std::chrono::system_clock::now;
+			reqInfo._msgTime = std::chrono::system_clock::now();
 
 			if (this->_socketMap[clientSocket]->isRequestRelevent(reqInfo))
 			{
