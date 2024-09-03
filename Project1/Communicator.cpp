@@ -9,6 +9,8 @@
 #include <set>
 #include "map"
 #include <fstream>
+#include "LoginRequestHandler.h"
+#include <chrono>
 
 Communicator::Communicator()
 {
@@ -56,7 +58,6 @@ void Communicator::BindAndListen(int port)
 	if (listen(_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
 	std::cout << "Listening on port " << port << std::endl;
-	
 
 }
 
@@ -83,29 +84,69 @@ void Communicator::acceptClient()
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
-	try
+	LoginRequestHandler* newlog = new LoginRequestHandler();
+	//LoginRequestHandler* newlog;
+	_socketMap[clientSocket] = newlog;
+	int byteFromSocket;
+	char messegeCode;
+	char lengthBuffer[4];
+	RequestInfo reqInfo;
+
+	while (true)
 	{
-		char m[6];
+		try
+		{
+			/*char m[6];
 
-		recv(clientSocket, m, 5, 0);
-		m[5] = 0;
-		std::cout << m << std::endl;
-
-
-		//std::cout << "here" << std::endl;
-		std::string s = "Hello";
-		send(clientSocket, s.c_str(), s.size(), 0);
+			recv(clientSocket, m, 5, 0);
+			m[5] = 0;
+			std::cout << m << std::endl;
 
 
-		// Closing the socket (in the level of the TCP protocol)
-		/*std::string s = "Bye";
-		send(clientSocket, s.c_str(), s.size(), 0);*/
+			//std::cout << "here" << std::endl;
+			std::string s = "Hello";
+			send(clientSocket, s.c_str(), s.size(), 0);
 
-		closesocket(clientSocket);
-	}
-	catch (const std::exception& e)
-	{
-		closesocket(clientSocket);
+
+			// Closing the socket (in the level of the TCP protocol)
+			/std::string s = "Bye";
+			send(clientSocket, s.c_str(), s.size(), 0);*/
+			byteFromSocket = recv(clientSocket, &messegeCode, 1, 0);
+			reqInfo._msgCode = int(messegeCode);
+
+			byteFromSocket = recv(clientSocket, lengthBuffer, 4, 0);
+			// make length buffer int ------------>>>>>>>>>>>>> have to check if that's OK
+			int msgSize = int(lengthBuffer);
+
+			char* tmpMsgBuff = new char[msgSize];
+			byteFromSocket = recv(clientSocket, tmpMsgBuff, msgSize, 0);
+			for (int i = 0; i < msgSize; i++)
+			{
+				reqInfo._msgInfo.push_back(tmpMsgBuff[i]);
+			}
+			delete[] tmpMsgBuff;
+			// reqInfo._msgTime = std::chrono::system_clock::now;
+
+			if (this->_socketMap[clientSocket]->isRequestRelevent(reqInfo))
+			{
+				RequestResult resy = this->_socketMap[clientSocket]->handleRequest(reqInfo);
+				delete this->_socketMap[clientSocket];
+				this->_socketMap[clientSocket] = resy.newHandler;
+
+				std::string sendBuf;
+				for (int i = 0; i < resy._msgBuffer.size(); i++)
+				{
+					sendBuf += resy._msgBuffer[i];
+				}
+				send(clientSocket, sendBuf.c_str(), sendBuf.size(), 0);
+			}
+
+			closesocket(clientSocket);
+		}
+		catch (const std::exception& e)
+		{
+			closesocket(clientSocket);
+		}
 	}
 }
 

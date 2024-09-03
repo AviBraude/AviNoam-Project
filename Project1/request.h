@@ -17,3 +17,16 @@ struct ErrorResponse
 {
 	std::string _message;
 };
+
+struct LoginRequest
+{
+	std::string _userName;
+	std::string _password;
+};
+
+struct SigninRequest
+{
+	std::string _userName;
+	std::string _password;
+	std::string _email;
+};
