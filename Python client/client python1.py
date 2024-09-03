@@ -81,7 +81,7 @@ try:
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect(('localhost', int(port)))
-    print("\nSending \'Hello\' to client...\n")
+    print("\nSending \'Hello\' to server...\n")
     hello(client_socket)
 
 except TypeError:
