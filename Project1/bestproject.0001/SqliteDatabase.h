@@ -3,10 +3,10 @@
 #include"sqlite3.h"
 
 
-class SQliteDatabase : IDatabase
+class SQliteDatabase : public IDatabase
 {
 	
-
+public:
 	bool open();
 	bool close();
 	
@@ -14,8 +14,8 @@ class SQliteDatabase : IDatabase
 	int doesPasswordMatch(std::string, std::string);
 	int addNewUser(std::string, std::string, std::string);
 
-private:
 	SQliteDatabase();
+private:
 	//helpers
 
 	bool isfile(std::string);

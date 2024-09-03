@@ -32,7 +32,7 @@ RequestResult LoginRequestHandler::login(RequestInfo& a)
 
     logRequest = JsonResponsePacketDeserializer::deserializeLoginRequest(a._msgInfo);
     LoginResponse logRespons;
-    int checky = _factory.getLoginManager().Login(logRequest);
+    int checky = _factory.getLoginManager().login(logRequest);
     logRespons._status = checky;
     if (checky == CORRECT_NAME_AND_PASSWORD)
     {

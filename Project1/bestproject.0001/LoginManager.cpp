@@ -1,6 +1,6 @@
 #include "LoginManager.h"
 #include "SqliteDatabase.h"
-
+#include"request.h"
 
 
 
@@ -16,9 +16,9 @@ LoginManager::~LoginManager()
 int LoginManager::signup(SigninRequest rqst)
 {
 	int check;
-	std::string name = rqst.name;
-	std::string password = rqst.password;
-	std::string mail = rqst.email;
+	std::string name = rqst._userName;
+	std::string password = rqst._password;
+	std::string mail = rqst._email;
 	_database->open();
 	check = _database->doesUserExist(name);
 	if (check)//name aleady exists
@@ -47,9 +47,9 @@ int LoginManager::signup(SigninRequest rqst)
 int LoginManager::login(LoginRequest rqst)
 {
 	int check;
-	std::string name = rqst.name;
-	std::string password = rqst.password;
-	std::string mail = rqst.email;
+	std::string name = rqst._userName;
+	std::string password = rqst._password;
+	//std::string mail = rqst.email;
 	_database->open();
 	check = _database->doesUserExist(name);
 	if (check)//name aleady exists
@@ -89,4 +89,13 @@ void LoginManager::logout(std::string name)
 LoggedUser::LoggedUser(std::string name)
 {
 	_userName = name;
+}
+
+bool LoggedUser::operator==(const LoggedUser other)//dont know why it works
+{
+	if (this->getUserName() == other.getUserName())
+	{
+		return true;
+	}
+	return false;
 }

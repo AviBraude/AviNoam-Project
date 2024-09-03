@@ -2,7 +2,9 @@
 #include <chrono>
 #include <vector>
 
+
 class RequestResult;
+struct RequestInfo;
 class IRequestHandler
 {
 public:

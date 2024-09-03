@@ -4,6 +4,8 @@
 #include <string>
 #include "RequestHandlerFactory.h"
 
+class RequestHandlerFactory;
+
 class LoginRequestHandler : public IRequestHandler
 {
 public:

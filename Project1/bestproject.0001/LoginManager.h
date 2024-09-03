@@ -1,17 +1,17 @@
 #pragma once
 #include "IDatabase.h"
 #include<vector>
-#include"LoginRequest.h"
+#include"request.h"
 
 
-
+class LoggedUser;
 class LoginManager {
 
 public:
 	LoginManager(IDatabase* db);
 	~LoginManager();
 
-	int signup(SignupRequest rqst);
+	int signup(SigninRequest rqst);
 	int login(LoginRequest rqst);
 	void logout(std::string name);
 
@@ -30,8 +30,11 @@ class LoggedUser
 {
 
 public:
+
 	LoggedUser(std::string name);
-	inline std::string getUserName() { return _userName; };
+
+	bool operator == (const LoggedUser);
+	inline std::string getUserName()const { return _userName; };
 	//fields
 	std::string _userName;
 };
