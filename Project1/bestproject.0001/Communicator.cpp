@@ -44,10 +44,10 @@ void Communicator::stratHandleRequest(int port)
 int Communicator::fromBytsToInt(char* chai)
 {
 	int res = 0;
-	res += chai[0];
-	res += chai[1] * 256;
-	res += chai[2] * 256 * 256;
-	res += chai[3] * 256 * 256 *256;
+	res += chai[3];
+	res += chai[2] * 256;
+	res += chai[1] * 256 * 256;
+	res += chai[0] * 256 * 256 *256;
 	return res;
 }
 

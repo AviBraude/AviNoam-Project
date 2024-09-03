@@ -105,11 +105,6 @@ int SQliteDatabase::addNewUser(std::string name, std::string password, std::stri
 	
 }
 
-SQliteDatabase::SQliteDatabase()
-{
-	_DB = nullptr;
-}
-
 bool SQliteDatabase::isfile(std::string fileName)
 {
 	std::ifstream f;

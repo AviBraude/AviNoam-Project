@@ -14,7 +14,7 @@ public:
 	int doesPasswordMatch(std::string, std::string);
 	int addNewUser(std::string, std::string, std::string);
 
-	SQliteDatabase();
+	
 private:
 	//helpers
 

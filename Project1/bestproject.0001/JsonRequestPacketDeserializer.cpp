@@ -11,7 +11,7 @@ LoginRequest JsonResponsePacketDeserializer::deserializeLoginRequest(std::vector
     loginRequest._userName = jsonOb["username"];
     loginRequest._password = jsonOb["password"];
     
-    return LoginRequest();
+    return loginRequest;
 }
 
 SigninRequest JsonResponsePacketDeserializer::deserializeSignUpRequest(std::vector<unsigned char> signupMsg)
