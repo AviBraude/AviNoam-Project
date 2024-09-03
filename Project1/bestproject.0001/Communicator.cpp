@@ -105,21 +105,6 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	{
 		try
 		{
-			/*char m[6];
-
-			recv(clientSocket, m, 5, 0);
-			m[5] = 0;
-			std::cout << m << std::endl;
-
-
-			//std::cout << "here" << std::endl;
-			std::string s = "Hello";
-			send(clientSocket, s.c_str(), s.size(), 0);
-
-
-			// Closing the socket (in the level of the TCP protocol)
-			/std::string s = "Bye";
-			send(clientSocket, s.c_str(), s.size(), 0);*/
 			byteFromSocket = recv(clientSocket, &messegeCode, 1, 0);
 			reqInfo._msgCode = int(messegeCode);
 
@@ -142,12 +127,13 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				delete this->_socketMap[clientSocket];
 				this->_socketMap[clientSocket] = resy.newHandler;
 
-				std::string sendBuf;
+				std::string sendBuf = "";
 				for (int i = 0; i < resy._msgBuffer.size(); i++)
 				{
 					sendBuf += resy._msgBuffer[i];
 				}
-				send(clientSocket, sendBuf.c_str(), sendBuf.size(), 0);
+				const char* sendChar = sendBuf.c_str();
+				byteFromSocket = send(clientSocket, sendChar, sendBuf.size(), 0);
 			}
 
 			closesocket(clientSocket);

@@ -28,8 +28,12 @@ std::vector<unsigned char> JsonResponsePacketSerializer::helpSerial(json jsonObj
 	std::string strJson = jsonObject.dump();
 	int lenStr = strJson.length();
 	std::vector<unsigned char> res;
+
 	const char mycode = STATUS1;
 	res.push_back(mycode);
+	res.push_back(lenStr>>24);
+	res.push_back(lenStr>>16);
+	res.push_back(lenStr>>8);
 	res.push_back(lenStr);
 	for (int i = 0; i < lenStr; i++)
 	{

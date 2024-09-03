@@ -1,4 +1,5 @@
 #include "LoginRequestHandler.h"
+#include "MenuRequestHandler.h"
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
 #include <string>
@@ -36,7 +37,7 @@ RequestResult LoginRequestHandler::login(RequestInfo& a)
     logRespons._status = checky;
     if (checky == CORRECT_NAME_AND_PASSWORD)
     {
-        res.newHandler = nullptr; // here we will put the new state (menu)
+        res.newHandler = _factory.creatMenuRequestHandler(); // here we will put the new state (menu)
         res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(logRespons);
     }
     else
@@ -59,7 +60,7 @@ RequestResult LoginRequestHandler::signup(RequestInfo& a)
     signRespons._status = checky;
     if (checky == CORRECT_NAME_AND_PASSWORD)
     {
-        res.newHandler = nullptr; // here we will put the new state (menu)
+        res.newHandler = _factory.creatMenuRequestHandler(); // here we will put the new state (menu)
         res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(signRespons);
     }
     else

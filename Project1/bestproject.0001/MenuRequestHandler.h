@@ -4,7 +4,7 @@
 
 class RequestHandlerFactory;
 
-class 	MenuRequestHandler : public IRequestHandler
+class MenuRequestHandler : public IRequestHandler
 {
 public:
 	inline MenuRequestHandler(RequestHandlerFactory& factory) : _factory(factory) {};

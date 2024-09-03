@@ -39,7 +39,7 @@ bool SQliteDatabase::open()
 			const char* sql = "CREATE TABLE Users("  \
 			"NAME TEXT PRIMARY KEY  NOT NULL," \
 			"MAIL TEXT NOT NULL," \
-			"PASSWORD TEXT NOT NULL."")";
+			"PASSWORD TEXT NOT NULL"")";
 
 		check = sqlite3_exec(this->_DB, sql, nullptr, nullptr, &zErrMsg);
 		}
@@ -93,7 +93,7 @@ int SQliteDatabase::addNewUser(std::string name, std::string password, std::stri
 {
 	int check;
 	char* zErrMsg;
-	std::string querry = "INSERT INTO Users (Name, Password, Email)\
+	std::string querry = "INSERT INTO Users (NAME, PASSWORD, MAIL)\
 		VALUES('"+name +"', '"+ password+"', '"+mail+"'); ";
 
 	check = sqlite3_exec(this->_DB, querry.c_str(), nullptr, nullptr, &zErrMsg);//callback func

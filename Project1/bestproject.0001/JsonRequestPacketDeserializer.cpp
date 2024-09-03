@@ -23,7 +23,7 @@ SigninRequest JsonResponsePacketDeserializer::deserializeSignUpRequest(std::vect
     signRequest._password = jsonOb["password"];
     signRequest._email = jsonOb["email"];
 
-    return SigninRequest();
+    return signRequest;
 }
 
 
