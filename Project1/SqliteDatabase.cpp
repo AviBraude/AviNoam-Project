@@ -37,7 +37,7 @@ bool SQliteDatabase::open()
 			std::cout << "Opened database successfully" << std::endl;
 		
 			const char* sql = "CREATE TABLE Users("  \
-			"NAME PRIMARY KEY TEXT NOT NULL," \
+			"NAME TEXT PRIMARY KEY  NOT NULL," \
 			"MAIL TEXT NOT NULL," \
 			"PASSWORD TEXT NOT NULL."")";
 
@@ -65,9 +65,9 @@ int SQliteDatabase::doesUserExist(std::string currentName)
 	check = sqlite3_exec(this->_DB, querry.c_str(), mycallback, &countName, &zErrMsg);//callback func
 	if (countName > 0)
 	{
-		return false;//name is already taken
+		return -1;//name is already taken
 	}
-	return true;//good name doesnt exist yet and is valid
+	return 0;//good name doesnt exist yet and is valid
 	
 }
 
@@ -83,9 +83,9 @@ int SQliteDatabase::doesPasswordMatch(std::string currentName, std::string passw
 	check = sqlite3_exec(this->_DB, querry.c_str(), mycallback, &countName, &zErrMsg);//callback func
 	if (countName == 0)
 	{
-		return false;//no match between name and password
+		return -1;//no match between name and password
 	}
-	return true;//name and password match
+	return 0;//name and password match
 
 }
 
@@ -99,7 +99,7 @@ int SQliteDatabase::addNewUser(std::string name, std::string password, std::stri
 	check = sqlite3_exec(this->_DB, querry.c_str(), nullptr, nullptr, &zErrMsg);//callback func
 	if (check)
 	{
-		return false;
+		return -1;
 	}
 	return 0;
 	
@@ -111,6 +111,7 @@ bool SQliteDatabase::isfile(std::string fileName)
 	f.open(fileName);
 	if (f)
 	{
+		f.close();
 		return true;
 	}
 	return false;

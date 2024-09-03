@@ -1,18 +1,19 @@
 #pragma once
 #include "IDatabase.h"
 #include<vector>
+#include"LoginRequest.h"
 
 
 
 class LoginManager {
 
 public:
-	LoginManager();
+	LoginManager(IDatabase* db);
 	~LoginManager();
 
-	void signup(std::string, std::string, std::string);
-	void login(std::string, std::string);
-	void logout(std::string);
+	int signup(SignupRequest rqst);
+	int login(LoginRequest rqst);
+	void logout(std::string name);
 
 
 
@@ -27,7 +28,9 @@ private:
 
 class LoggedUser
 {
+
 public:
+	LoggedUser(std::string name);
 	inline std::string getUserName() { return _userName; };
 	//fields
 	std::string _userName;
