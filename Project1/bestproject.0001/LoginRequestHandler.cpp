@@ -6,7 +6,7 @@
 #define CORRECT_NAME_AND_PASSWORD 1
 #define LOGIN_CODE 1
 #define SIGNUP_CODE 2
-
+#define LOG_OUT_CODE 3
 
 bool LoginRequestHandler::isRequestRelevent(RequestInfo& a)
 {

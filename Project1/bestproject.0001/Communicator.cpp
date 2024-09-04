@@ -11,6 +11,8 @@
 #include <fstream>
 #include "LoginRequestHandler.h"
 #include <chrono>
+#include "JsonResponsePacketSerializer.h"
+#include "request.h"
 
 Communicator::Communicator(RequestHandlerFactory& factory) : _factory(factory)
 {
@@ -109,15 +111,16 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			reqInfo._msgCode = int(messegeCode);
 
 			byteFromSocket = recv(clientSocket, lengthBuffer, 4, 0);
-			// make length buffer int ------------>>>>>>>>>>>>> have to check if that's OK
 			int msgSize = fromBytsToInt(lengthBuffer);
 
 			char* tmpMsgBuff = new char[msgSize];
 			byteFromSocket = recv(clientSocket, tmpMsgBuff, msgSize, 0);
+			if (byteFromSocket == INVALID_SOCKET || byteFromSocket == 0)
+				throw (std::invalid_argument("client closd conection"));
+
 			for (int i = 0; i < msgSize; i++)
-			{
 				reqInfo._msgInfo.push_back(tmpMsgBuff[i]);
-			}
+			
 			delete[] tmpMsgBuff;
 			reqInfo._msgTime = std::chrono::system_clock::now();
 
@@ -135,12 +138,30 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				const char* sendChar = sendBuf.c_str();
 				byteFromSocket = send(clientSocket, sendChar, sendBuf.size(), 0);
 			}
+			else
+			{
+				// if the msg code is invalid - response with error msg, status 0
+				std::cout << "unvalide msg code" << std::endl;
+				LoginResponse logRespons;
+				RequestResult res;
+				logRespons._status = 0;
+				res._msgBuffer = JsonResponsePacketSerializer::serializeResponse(logRespons);
+				std::string sendErr = "";
+				for (int i = 0; i < res._msgBuffer.size(); i++)
+				{
+					sendErr += res._msgBuffer[i];
+				}
+				byteFromSocket = send(clientSocket, sendErr.c_str(), sendErr.size(), 0);
+			}
 
-			closesocket(clientSocket);
+			/*std::cout << "closing client socket" << std::endl;
+			closesocket(clientSocket);*/
 		}
 		catch (const std::exception& e)
 		{
+			std::cout << "closing client socket" << std::endl;
 			closesocket(clientSocket);
+			break;
 		}
 	}
 }

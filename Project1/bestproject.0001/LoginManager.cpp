@@ -81,7 +81,7 @@ int LoginManager::login(LoginRequest rqst)
 		{
 			LoggedUser newUser(name);
 			_loggedUsers.push_back(newUser);
-			std::cout << "login succeessded - closing database" << std::endl;
+			std::cout << "login succeeded - closing database" << std::endl;
 			_database->close();
 			return 1;//good
 		}
