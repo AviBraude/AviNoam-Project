@@ -9,7 +9,7 @@
 class RoomManager
 {
 public:
-	void createRoom(LoggedUser u, RoomData r);
+	int createRoom(LoggedUser u, RoomData r);
 	void deleteRoom(int id);
 	unsigned int getRoomState(int id);
 	std::vector<RoomData> getRooms();

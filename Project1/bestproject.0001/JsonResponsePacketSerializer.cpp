@@ -23,6 +23,13 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Signu
 	return res;
 }
 
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(LogoutRespons logoutResponse)
+{
+	json jsonObject = { "status: " , logoutResponse._status };
+	std::vector<unsigned char> res = JsonResponsePacketSerializer::helpSerial(jsonObject);
+	return res;
+}
+
 std::vector<unsigned char> JsonResponsePacketSerializer::helpSerial(json jsonObject)
 {
 	std::string strJson = jsonObject.dump();
@@ -39,5 +46,19 @@ std::vector<unsigned char> JsonResponsePacketSerializer::helpSerial(json jsonObj
 	{
 		res.push_back(strJson[i]);
 	}
+	return res;
+}
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(JoinRoomRespons joinRoomResponse)
+{
+	json jsonObject = { "status: " , joinRoomResponse._status };
+	std::vector<unsigned char> res = JsonResponsePacketSerializer::helpSerial(jsonObject);
+	return res;
+}
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(CreateRoomRespons createRoomResponse)
+{
+	json jsonObject = { "status: " , createRoomResponse._status };
+	std::vector<unsigned char> res = JsonResponsePacketSerializer::helpSerial(jsonObject);
 	return res;
 }

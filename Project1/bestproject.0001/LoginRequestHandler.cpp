@@ -3,14 +3,12 @@
 #include "JsonRequestPacketDeserializer.h"
 #include "JsonResponsePacketSerializer.h"
 #include <string>
-#define CORRECT_NAME_AND_PASSWORD 1
-#define LOGIN_CODE 1
-#define SIGNUP_CODE 2
-#define LOG_OUT_CODE 3
+
+#include "define.h"
 
 bool LoginRequestHandler::isRequestRelevent(RequestInfo& a)
 {
-    if (a._msgCode == LOGIN_CODE || a._msgCode == SIGNUP_CODE)
+    if (a._msgCode == LOG_IN_CODE || a._msgCode == SIGN_UP_CODE)
         return true;
     return false;
 }
@@ -18,9 +16,9 @@ bool LoginRequestHandler::isRequestRelevent(RequestInfo& a)
 RequestResult LoginRequestHandler::handleRequest(RequestInfo& a)
 {
     RequestResult reqResult;
-    if (a._msgCode == LOGIN_CODE)
+    if (a._msgCode == LOG_IN_CODE)
         reqResult = this->login(a);
-    else if (a._msgCode == SIGNUP_CODE)
+    else if (a._msgCode == SIGN_UP_CODE)
         reqResult = this->signup(a);
 
     return reqResult;

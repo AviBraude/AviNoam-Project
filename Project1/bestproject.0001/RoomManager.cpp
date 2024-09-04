@@ -2,10 +2,11 @@
 #include <algorithm>
 #include <string>
 
-void RoomManager::createRoom(LoggedUser u, RoomData r)
+int RoomManager::createRoom(LoggedUser u, RoomData r)
 {
 	//Room* roomy = new 
 	_rooms[r.id] = Room(u, r);
+	return 1;
 }
 
 void RoomManager::deleteRoom(int id)
