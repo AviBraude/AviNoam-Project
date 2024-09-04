@@ -5,8 +5,8 @@
 
 
 class LoggedUser;
-class LoginManager {
-
+class LoginManager 
+{
 public:
 	LoginManager(IDatabase* db);
 	~LoginManager();

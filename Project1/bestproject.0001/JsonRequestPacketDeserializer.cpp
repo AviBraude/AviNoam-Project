@@ -26,4 +26,35 @@ SigninRequest JsonResponsePacketDeserializer::deserializeSignUpRequest(std::vect
     return signRequest;
 }
 
+GetPlayersInRoomRequest JsonResponsePacketDeserializer::deserializeGetPlayersInRoomRequest(std::vector<unsigned char> getPlayersMsg)
+{
+    GetPlayersInRoomRequest playerRequest;
+    json jsonOb = json::parse(getPlayersMsg);
+
+    playerRequest.roomID = jsonOb["room_id"];
+    return playerRequest;
+}
+
+JoinRoomRequest JsonResponsePacketDeserializer::deserializeJoinRoomRequest(std::vector<unsigned char> JoinRoomMsg)
+{
+    JoinRoomRequest joinRoom;
+    json jsonOb = json::parse(JoinRoomMsg);
+
+    joinRoom.roomID = jsonOb["room_id"];
+    return JoinRoomRequest();
+}
+
+CreateRoomRequest JsonResponsePacketDeserializer::deserializeCreateRoomRequest(std::vector<unsigned char> CreateRoomMsg)
+{
+    CreateRoomRequest createRoom;
+    json jsonOb = json::parse(CreateRoomMsg);
+
+    createRoom.answerTimeout = jsonOb["timeout"];
+    createRoom.maxUsers = jsonOb["max_users"];
+    createRoom.questionCount = jsonOb["num_of_que"];
+    createRoom.roomName = jsonOb["room_name"];
+
+    return createRoom;
+}
+
 

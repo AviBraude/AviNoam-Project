@@ -139,6 +139,7 @@
     <ClInclude Include="MenuRequestHandler.h" />
     <ClInclude Include="request.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
+    <ClInclude Include="rooms.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SqliteDatabase.h" />
