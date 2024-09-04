@@ -70,7 +70,7 @@ bool SQliteDatabase::open()
 
 		check = sqlite3_exec(this->_DB, sql, nullptr, nullptr, &zErrMsg);
 		
-		sql = "INSERT INTO QUESTIONS (QUESTION, ANSWER1, ANSWER2, ANSWER3, ANSWER4, CORRECT_ANSWER) "
+		sql = "INSERT INTO QUESTIONS (QUESTION, ANSWER1, ANSWER2, ANSWER3, ANSWER4, CORRECT_ANSWER)  "
 			"VALUES (\"Which protocol is commonly used for secure web transactions?\", \"HTTP\", \"FTP\", \"HTTPS\", \"SMTP\", \"1\");\n";
 			
 		check = sqlite3_exec(this->_DB, sql, nullptr, nullptr, &zErrMsg);
