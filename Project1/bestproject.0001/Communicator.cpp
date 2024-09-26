@@ -16,7 +16,6 @@
 
 Communicator::Communicator(RequestHandlerFactory& factory) : _factory(factory)
 {
-
 	// this server use TCP. that why SOCK_STREAM & IPPROTO_TCP
 	// if the server use UDP we will use: SOCK_DGRAM & IPPROTO_UDP
 	_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -40,7 +39,6 @@ void Communicator::stratHandleRequest(int port)
 {
 	this->BindAndListen(port);
 	acceptClient();
-
 }
 
 int Communicator::fromBytsToInt(char* chai)
@@ -55,7 +53,6 @@ int Communicator::fromBytsToInt(char* chai)
 
 void Communicator::BindAndListen(int port)
 {
-
 	struct sockaddr_in sa = { 0 };
 
 	sa.sin_port = htons(port); // port that server will listen for
@@ -70,9 +67,7 @@ void Communicator::BindAndListen(int port)
 	if (listen(_serverSocket, SOMAXCONN) == SOCKET_ERROR)
 		throw std::exception(__FUNCTION__ " - listen");
 	std::cout << "Listening on port " << port << std::endl;
-
 }
-
 
 void Communicator::acceptClient()
 {
@@ -92,7 +87,6 @@ void Communicator::acceptClient()
 		clientThread.detach();
 	}
 }
-
 
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
@@ -153,9 +147,6 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				}
 				byteFromSocket = send(clientSocket, sendErr.c_str(), sendErr.size(), 0);
 			}
-
-			/*std::cout << "closing client socket" << std::endl;
-			closesocket(clientSocket);*/
 		}
 		catch (const std::exception& e)
 		{
@@ -166,12 +157,4 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	}
 }
 
-
-
-//string Server::getFileName(string myName, string otherName)
-//{
-//	if (myName > otherName)
-//		return otherName + '&' + myName;
-//	return myName + '&' + otherName;
-//}
 

@@ -24,7 +24,7 @@ std::vector<RoomData> RoomManager::getRooms()
 	std::vector<RoomData> ourData;
 	for_each(_rooms.begin(), _rooms.end(), [this, &ourData](std::pair<unsigned int, Room> it) {ourData.push_back(it.second.GetAllData()); });
 
-	return ;
+	return ourData;
 }
 
 Room& RoomManager::getRoom(int id)

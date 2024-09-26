@@ -30,6 +30,20 @@ std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(Logou
 	return res;
 }
 
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetRoomsRespons getRoomResponse)
+{
+	json jsonObject = { "Rooms: ", getRoomResponse._rooms};
+	std::vector<unsigned char> res = JsonResponsePacketSerializer::helpSerial(jsonObject);
+	return res;
+}
+
+std::vector<unsigned char> JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse playersInRoomResponse)
+{
+	json jsonObject = { "playersInRoom: " , playersInRoomResponse._players };
+	std::vector<unsigned char> res = JsonResponsePacketSerializer::helpSerial(jsonObject);
+	return res;
+}
+
 std::vector<unsigned char> JsonResponsePacketSerializer::helpSerial(json jsonObject)
 {
 	std::string strJson = jsonObject.dump();
